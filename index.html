@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data-collection-wolof</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Recensement de données Wolof en Français</h1>
+    <p>Ajoutez vos enregistrements pour enrichir notre base linguistique.</p>
+  </header>
+
+  <main>
+    <form id="dataForm" enctype="multipart/form-data">
+      
+      <label for="audio">Fichier audio :</label>
+      <input type="file" id="audio" name="audio" accept="audio/*" required />
+
+      <label for="transcription">Transcription :</label>
+      <textarea id="transcription" name="transcription" placeholder="Écrivez ici la transcription exacte de l'audio..." required></textarea>
+
+      <label for="traduction">Traduction :</label>
+      <textarea id="traduction" name="traduction" placeholder="Écrivez ici la traduction..." required></textarea>
+
+      <button type="submit">Envoyer</button>
+    </form>
+
+    <div id="message"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 Projet IA Wolof en Français | Collecte linguistique</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

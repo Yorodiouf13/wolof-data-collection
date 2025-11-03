@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Back Office - Gestion des Audios</title>
+  <link rel="stylesheet" href="style_admin.css">
+</head>
+<body>
+  <header>
+    <h1>Back Office - Gestion des Audios</h1>
+  </header>
+
+  <main>
+    <section class="actions">
+      <button id="exportBtn">Exporter le dataset en JSON</button>
+    </section>
+
+    <section class="table-section">
+      <table id="audioTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Audio</th>
+            <th>Transcription</th>
+            <th>Traduction</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <div id="message"></div>
+
+  <script src="script_admin.js"></script>
+</body>
+</html>
+

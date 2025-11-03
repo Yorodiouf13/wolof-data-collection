@@ -1,0 +1,57 @@
+[
+    {
+        "audio_path": "dataset_audios\/3",
+        "transcription": "le discours de sonko",
+        "traduction": "discourou sonko bi"
+    },
+    {
+        "audio_path": "dataset_audios\/4",
+        "transcription": "le discrours qu'a fait Sonko",
+        "traduction": "discours bi Sonko def"
+    },
+    {
+        "audio_path": "dataset_audios\/5",
+        "transcription": "il était une fois",
+        "traduction": "amone nafi"
+    },
+    {
+        "audio_path": "dataset_audios\/6",
+        "transcription": "discours bi",
+        "traduction": "le discours"
+    },
+    {
+        "audio_path": "dataset_audios\/7",
+        "transcription": "kjfl,lkf",
+        "traduction": "jkdlkqf"
+    },
+    {
+        "audio_path": "dataset_audios\/AUDIO-F6P2URDI",
+        "transcription": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos optio iure delectus tempora tenetur eligendi, nesciunt explicabo id exercitationem suscipit, maxime, unde a. Exercitationem id nesciunt repellat dicta minus atque.",
+        "traduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos optio iure delectus tempora tenetur eligendi, nesciunt explicabo id exercitationem suscipit, maxime, unde a. Exercitationem id nesciunt repellat dicta minus atque."
+    },
+    {
+        "audio_path": "dataset_audios\/",
+        "transcription": "ici c'est diomaye",
+        "traduction": "fi leu diomaye"
+    },
+    {
+        "audio_path": "dataset_audios\/AUDIO-KPKRPGN2",
+        "transcription": "baba mbaye",
+        "traduction": "baba mbaye"
+    },
+    {
+        "audio_path": "dataset_audios\/AUDIO-6JWQSTU2",
+        "transcription": "cheikh anta diop",
+        "traduction": "cheikh anta diop"
+    },
+    {
+        "audio_path": "dataset_audios\/AUDIO-SUHQE25V",
+        "transcription": "tout le sjous",
+        "traduction": "tous les jours"
+    },
+    {
+        "audio_path": "dataset_audios\/AUDIO-4MER1WIW",
+        "transcription": "voila nak",
+        "traduction": "essai 2"
+    }
+]
