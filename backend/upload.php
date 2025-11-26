@@ -12,6 +12,24 @@ function jsonResponse($status, $message) {
     exit;
 }
 
+// --- Fonction GUID (ton code) ---
+function GUID()
+{
+    if (function_exists('com_create_guid') === true)
+    {
+        return trim(com_create_guid(), '{}');
+    }
+
+    return sprintf(
+        '%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
+        mt_rand(0, 65535), mt_rand(0, 65535),
+        mt_rand(0, 65535),
+        mt_rand(16384, 20479),
+        mt_rand(32768, 49151),
+        mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535)
+    );
+}
+
 // --- Vérifier la méthode ---
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     jsonResponse("error", "Requête invalide (POST requis).");
@@ -32,33 +50,12 @@ if (!isset($_FILES["audio"]) || $_FILES["audio"]["error"] !== UPLOAD_ERR_OK) {
     jsonResponse("error", "Aucun fichier audio reçu ou erreur d’upload.");
 }
 
-// --- Fonction de génération d’ID unique ---
-function generateUniqueId($conn) {
-    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $id = '';
-    $isUnique = false;
-
-    while (!$isUnique) {
-        $id = "AUDIO-" . substr(str_shuffle(str_repeat($characters, 6)), 0, 8);
-        $stmt = $conn->prepare("SELECT id FROM uploads WHERE id = ?");
-        $stmt->bind_param("s", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows === 0) {
-            $isUnique = true;
-        }
-        $stmt->close();
-    }
-
-    return $id;
-}
-
 // === Traitement du fichier ===
-$transcription = trim($_POST["transcription"]);
-$traduction = trim($_POST["traduction"]);
-$original_name = basename($_FILES["audio"]["name"]);
-$audio_tmp = $_FILES["audio"]["tmp_name"];
-$upload_dir = "../audios/";
+$transcription  = trim($_POST["transcription"]);
+$traduction     = trim($_POST["traduction"]);
+$original_name  = basename($_FILES["audio"]["name"]);
+$audio_tmp      = $_FILES["audio"]["tmp_name"];
+$upload_dir     = "../audios/";
 
 if (!file_exists($upload_dir)) {
     mkdir($upload_dir, 0777, true);
@@ -66,21 +63,21 @@ if (!file_exists($upload_dir)) {
 
 $ext = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
 if (!in_array($ext, ["wav", "mp3"])) {
-    jsonResponse("error", "Format non supporté. Seuls les fichiers WAV et MP3 sont acceptés.");
+    jsonResponse("error", "Format non supporté. Seuls WAV et MP3 sont acceptés.");
 }
 
-$base_name = pathinfo($original_name, PATHINFO_FILENAME);
-$timestamp = date("Ymd_His");
-$randomId = substr(md5(uniqid(mt_rand(), true)), 0, 6);
-$final_name = "{$base_name}_{$timestamp}_{$randomId}.wav";
+// === GUID pour l'ID et le nom de fichier ===
+$guid = GUID();
+
+$final_name = $guid . ".wav"; // Tout est converti en WAV
 $final_path = $upload_dir . $final_name;
 
 // === Conversion ou déplacement ===
 if ($ext === "mp3") {
-    $tmp_mp3_path = "{$upload_dir}{$base_name}_{$timestamp}_{$randomId}.mp3";
+
+    $tmp_mp3_path = $upload_dir . $guid . ".mp3";
     move_uploaded_file($audio_tmp, $tmp_mp3_path);
 
-    // Chemin FFMPEG à adapter
     $ffmpegPath = "C:\\ffmpeg-2025-10-27-git-68152978b5-full_build\\bin\\ffmpeg.exe";
 
     if (!file_exists($ffmpegPath)) {
@@ -95,20 +92,31 @@ if ($ext === "mp3") {
     if ($return_var !== 0 || !file_exists($final_path)) {
         jsonResponse("error", "Erreur lors de la conversion du fichier audio.");
     }
+
 } else {
+    // Si déjà wav
     move_uploaded_file($audio_tmp, $final_path);
 }
 
 // --- Enregistrement MySQL ---
 $audio_path_db = "audios/" . $final_name;
-$unique_id = generateUniqueId($conn); // <--- ID personnalisé ici !
+$unique_id = $guid;
 
-$stmt = $conn->prepare("INSERT INTO uploads (id, audio_name, original_name, audio_path, transcription, traduction) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO uploads (id, audio_name, original_name, audio_path, transcription, traduction) 
+                        VALUES (?, ?, ?, ?, ?, ?)");
+
 if (!$stmt) {
     jsonResponse("error", "Erreur interne SQL (préparation).");
 }
 
-$stmt->bind_param("ssssss", $unique_id, $final_name, $original_name, $audio_path_db, $transcription, $traduction);
+$stmt->bind_param("ssssss", 
+    $unique_id, 
+    $final_name, 
+    $original_name, 
+    $audio_path_db, 
+    $transcription, 
+    $traduction
+);
 
 if ($stmt->execute()) {
     jsonResponse("success", "Formulaire enregistré avec succès sous l’ID : $unique_id");

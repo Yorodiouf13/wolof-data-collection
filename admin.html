@@ -12,8 +12,9 @@
   </header>
 
   <main>
-    <section class="actions">
-      <button id="exportBtn">Exporter le dataset en JSON</button>
+    <section>
+      <button id="exportBtn" class="actions">Exporter le dataset en JSON</button> 
+      <button id="deleteAllBtn" class="danger"> Tout supprimer</button>
     </section>
 
     <section class="table-section">
@@ -31,9 +32,12 @@
         </tbody>
       </table>
     </section>
+     <div id="message"></div>
   </main>
-
-  <div id="message"></div>
+  
+  <footer>
+    <p>© 2025 Projet IA Wolof en Français | Back Office</p>
+  </footer>
 
   <script src="script_admin.js"></script>
 </body>
